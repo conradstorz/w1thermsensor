@@ -10,6 +10,9 @@
 # virtualenv
 env
 
+# venv
+venv/
+
 # distutils with PIP
 build
 dist
