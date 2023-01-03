@@ -152,7 +152,7 @@ class W1ThermSensor:
 
         if not self.exists():
             raise NoSensorFoundError(
-                "Could not find sensor of type {} with id {}".format(self.name, self.id)
+                f"Could not find sensor of type {self.name} with id {self.id}"
             )
 
         self.set_offset(offset, offset_unit)
@@ -171,7 +171,7 @@ class W1ThermSensor:
         s = self.get_available_sensors([sensor_type])
         if not s:
             raise NoSensorFoundError(
-                "Could not find any sensor of type {}".format(sensor_type.name)
+                f"Could not find any sensor of type {sensor_type.name}"
             )
 
         self._init_with_type_and_id(sensor_type, s[0].id)
@@ -182,7 +182,7 @@ class W1ThermSensor:
         )
         if not sensor:
             raise NoSensorFoundError(
-                "Could not find sensor with id {}".format(sensor_id)
+                f"Could not find sensor with id {sensor_id}"
             )
 
         self._init_with_type_and_id(sensor.type, sensor.id)
@@ -197,9 +197,7 @@ class W1ThermSensor:
         :returns: representation of this instance
         :rtype: string
         """
-        return "{}(sensor_type={}, sensor_id='{}')".format(
-            self.__class__.__name__, str(self.type), self.id
-        )
+        return f"{self.__class__.__name__}(sensor_type={str(self.type)}, sensor_id='{self.id}')"
 
     def __str__(self) -> str:
         """Returns a pretty string respresentation
@@ -207,9 +205,8 @@ class W1ThermSensor:
         :returns: representation of this instance
         :rtype: string
         """
-        return "{0}(name='{1}', type={2}(0x{2:x}), id='{3}')".format(
-            self.__class__.__name__, self.type.name, self.type.value, self.id
-        )
+        return f"{self.__class__.__name__}(name='{self.type.name}', type={self.type.value:x}(0x{self.type.value:x}), id='{self.id}')"
+
 
     @property
     def name(self) -> str:
@@ -219,7 +216,7 @@ class W1ThermSensor:
     @property
     def slave_prefix(self) -> str:
         """Returns the slave prefix for this temperature sensor"""
-        return "%s-" % hex(self.type.value)[2:]
+        return f"{hex(self.type.value)[2:]}-"
 
     def exists(self) -> bool:
         """Returns the sensors slave path"""
@@ -239,7 +236,7 @@ class W1ThermSensor:
                 data = f.readlines()
         except IOError:
             raise NoSensorFoundError(
-                "Could not find sensor of type {} with id {}".format(self.name, self.id)
+                f"Could not find sensor of type {self.name} with id {self.id}"
             )
 
         if (
@@ -328,23 +325,21 @@ class W1ThermSensor:
         """
         if not 9 <= resolution <= 12:
             raise ValueError(
-                "The given sensor resolution '{0}' is out of range (9-12)".format(
-                    resolution
-                )
+                f"The given sensor resolution '{resolution}' is out of range (9-12)"
             )
 
         exitcode = subprocess.call(
-            "echo {0} > {1}".format(resolution, self.sensorpath), shell=True
+            f"echo {resolution} > {self.sensorpath}", shell=True
         )
         if exitcode != 0:
             raise W1ThermSensorError(
-                "Failed to change resolution to {0} bit. "
-                "You might have to be root to change the resolution".format(resolution)
+                f"""Failed to change resolution to {resolution} bit.
+                You might have to be root to change the resolution"""
             )
 
         if persist:
             exitcode = subprocess.call(
-                "echo 0 > {0}".format(self.sensorpath), shell=True
+                f"echo 0 > {self.sensorpath}", shell=True
             )
             if exitcode != 0:
                 raise W1ThermSensorError(

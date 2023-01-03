@@ -30,13 +30,11 @@ class NoSensorFoundError(W1ThermSensorError):
     def __init__(self, message):
         super().__init__(
             textwrap.dedent(
-                """
-            {}
+                f"""
+            {message}
             Please check cabling and check your /boot/config.txt for
             dtoverlay=w1-gpio
-            """.format(
-                    message
-                )
+            """
             ).rstrip()
         )
 
@@ -46,7 +44,7 @@ class SensorNotReadyError(W1ThermSensorError):
 
     def __init__(self, sensor):
         super().__init__(
-            "Sensor {} is not yet ready to read temperature".format(sensor.id)
+            f"Sensor {sensor.id} is not yet ready to read temperature"
         )
         self.sensor = sensor
 
@@ -62,8 +60,8 @@ class UnsupportedSensorError(W1ThermSensorError):
     """Exception when unsupported sensor is given"""
 
     def __init__(self, sensor_name, supported_sensors):
-        super().__init__("The sensor {} is not supported. Use one of: {}".format(
-            sensor_name, ", ".join(supported_sensors)))
+        supported_text = ", ".join(supported_sensors)
+        super().__init__(f"The sensor {sensor_name} is not supported. Use one of: {supported_text}")
 
 
 class ResetValueError(W1ThermSensorError):
@@ -71,6 +69,6 @@ class ResetValueError(W1ThermSensorError):
 
     def __init__(self, sensor_id):
         super().__init__(
-            "Sensor {} yields the reset value of 85 degree millicelsius. "
-            "Please check the power-supply for the sensor.".format(sensor_id)
+            f"""Sensor {sensor_id} yields the reset value of 85 degree millicelsius.
+            Please check the power-supply for the sensor."""
         )
