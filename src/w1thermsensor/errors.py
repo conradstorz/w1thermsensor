@@ -43,9 +43,7 @@ class SensorNotReadyError(W1ThermSensorError):
     """Exception when the sensor is not ready yet"""
 
     def __init__(self, sensor):
-        super().__init__(
-            f"Sensor {sensor.id} is not yet ready to read temperature"
-        )
+        super().__init__(f"Sensor {sensor.id} is not yet ready to read temperature")
         self.sensor = sensor
 
 
@@ -61,7 +59,9 @@ class UnsupportedSensorError(W1ThermSensorError):
 
     def __init__(self, sensor_name, supported_sensors):
         supported_text = ", ".join(supported_sensors)
-        super().__init__(f"The sensor {sensor_name} is not supported. Use one of: {supported_text}")
+        super().__init__(
+            f"The sensor {sensor_name} is not supported. Use one of: {supported_text}"
+        )
 
 
 class ResetValueError(W1ThermSensorError):

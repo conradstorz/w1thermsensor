@@ -181,9 +181,7 @@ class W1ThermSensor:
             (s for s in self.get_available_sensors() if s.id == sensor_id), None
         )
         if not sensor:
-            raise NoSensorFoundError(
-                f"Could not find sensor with id {sensor_id}"
-            )
+            raise NoSensorFoundError(f"Could not find sensor with id {sensor_id}")
 
         self._init_with_type_and_id(sensor.type, sensor.id)
 
@@ -206,7 +204,6 @@ class W1ThermSensor:
         :rtype: string
         """
         return f"{self.__class__.__name__}(name='{self.type.name}', type={self.type.value:x}(0x{self.type.value:x}), id='{self.id}')"
-
 
     @property
     def name(self) -> str:
@@ -328,9 +325,7 @@ class W1ThermSensor:
                 f"The given sensor resolution '{resolution}' is out of range (9-12)"
             )
 
-        exitcode = subprocess.call(
-            f"echo {resolution} > {self.sensorpath}", shell=True
-        )
+        exitcode = subprocess.call(f"echo {resolution} > {self.sensorpath}", shell=True)
         if exitcode != 0:
             raise W1ThermSensorError(
                 f"""Failed to change resolution to {resolution} bit.
@@ -338,9 +333,7 @@ class W1ThermSensor:
             )
 
         if persist:
-            exitcode = subprocess.call(
-                f"echo 0 > {self.sensorpath}", shell=True
-            )
+            exitcode = subprocess.call(f"echo 0 > {self.sensorpath}", shell=True)
             if exitcode != 0:
                 raise W1ThermSensorError(
                     "Failed to write resolution configuration to sensor EEPROM"
