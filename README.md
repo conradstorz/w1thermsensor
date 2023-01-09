@@ -51,6 +51,10 @@ After that, don't forget to reboot.
 
     Raspi GND       Pin 6 -----------------------------   GND    DS18B20
 
+If your sensor has four wires - Red connects to VCC, Black connects to GND and White is Data. The copper wire is soldered to the wire shielding
+If your sensor has three wires - Red connects to VCC, Blue or Black connects to GND and Yellow or White is Data
+NOTE: The data sheet for the MAXIM DS18B20 digital thermometer labels the power input as VDD not VCC.
+
 
 ## Installation
 
